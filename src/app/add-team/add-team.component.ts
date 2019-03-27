@@ -19,9 +19,8 @@ export class AddTeamComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private teamService: TeamService,
-    private notifierService: NotifierService,
     private spinner: NgxSpinnerService) {
-      if (this.userService.currentTokenValue) {
+      if (!this.userService.currentTokenValue) {
         this.router.navigate(['/']);
       }
     }
@@ -44,12 +43,10 @@ export class AddTeamComponent implements OnInit {
     this.teamService.addTeam(this.teamForm.value)
       .subscribe(
         data => {
-          this.notifierService.notify('success', 'Added team successfully');
           this.spinner.hide();
           this.router.navigate(['/teams']);
         },
         ({ error }) => {
-          this.notifierService.notify('error', error.message);
           this.spinner.hide();
         });
   }

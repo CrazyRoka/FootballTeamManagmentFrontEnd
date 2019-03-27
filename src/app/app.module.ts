@@ -20,6 +20,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { TeamsComponent } from './teams/teams.component';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
+import { AddFootballPlayerComponent } from './add-football-player/add-football-player.component';
+import { EditFootballPlayerComponent } from './edit-football-player/edit-football-player.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { TeamDetailsComponent } from './team-details/team-details.component';
     TeamsComponent,
     AddTeamComponent,
     TeamDetailsComponent,
+    AddFootballPlayerComponent,
+    EditFootballPlayerComponent,
   ],
   imports: [
     BrowserModule,

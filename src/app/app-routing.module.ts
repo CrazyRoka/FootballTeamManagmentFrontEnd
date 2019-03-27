@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { TeamsComponent } from './teams/teams.component';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
+import { AddFootballPlayerComponent } from './add-football-player/add-football-player.component';
+import { EditFootballPlayerComponent } from './edit-football-player/edit-football-player.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,14 @@ const routes: Routes = [
   {
     path: 'teams/details/:id',
     component: TeamDetailsComponent
+  },
+  {
+    path: 'players/add',
+    component: AddFootballPlayerComponent
+  },
+  {
+    path: 'players/details/:id',
+    component: EditFootballPlayerComponent
   }
 ];
 

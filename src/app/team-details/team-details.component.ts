@@ -6,6 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from '../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
+import { FootballPlayer } from '../footballPlayer';
+import { FootballPlayerService } from '../services/football-player.service';
 
 @Component({
   selector: 'app-team-details',
@@ -15,28 +17,29 @@ import { map } from 'rxjs/operators';
 export class TeamDetailsComponent implements OnInit {
 
   teamForm: FormGroup;
+  players: FootballPlayer[] = [];
+  id: number;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
     private teamService: TeamService,
-    private notifierService: NotifierService,
+    private playerService: FootballPlayerService,
     private spinner: NgxSpinnerService) {
-      if (this.userService.currentTokenValue) {
+      if (!this.userService.currentTokenValue) {
         this.router.navigate(['/']);
       }
     }
 
   ngOnInit() {
-    let id;
-    this.route.params.subscribe(params => id = params.id);
+    this.route.params.subscribe(params => this.id = params.id);
     this.spinner.show();
     this.teamForm = new FormGroup({
       Name: new FormControl('')
     });
 
-    this.teamService.getTeam(id).subscribe(
+    this.teamService.getTeam(this.id).subscribe(
       data => {
         this.teamForm = new FormGroup({
           Name: new FormControl(data.name, [
@@ -45,6 +48,7 @@ export class TeamDetailsComponent implements OnInit {
           ]),
           id: new FormControl(data.id)
         });
+        this.players = data.footballPlayers;
         this.spinner.hide();
       },
       error => {
@@ -63,17 +67,38 @@ export class TeamDetailsComponent implements OnInit {
     this.teamService.updateTeam(this.teamForm.value)
       .subscribe(
         data => {
-          this.notifierService.notify('success', 'Updated team successfully');
           this.spinner.hide();
         },
         ({ error }) => {
-          this.notifierService.notify('error', error.message);
           this.spinner.hide();
         });
   }
 
-  onReset() {
-    this.teamForm.reset();
+  onNew() {
+    this.router.navigate(['/players/add', { teamId: this.id }]);
   }
 
+  onDelete(index: number) {
+    if(index < 0 || index >= this.players.length) {
+      return;
+    }
+    this.spinner.show();
+    this.playerService.deleteFootballPlayer(this.players[index].id)
+      .subscribe(
+        data => {
+          this.spinner.hide();
+          this.players.splice(index, 1);
+        },
+        error => {
+          this.spinner.hide();
+        }
+      );
+  }
+
+  onEdit(index: number) {
+    if(index < 0 || index >= this.players.length) {
+      return;
+    }
+    this.router.navigate(['/players/details', this.players[index].id]);
+  }
 }

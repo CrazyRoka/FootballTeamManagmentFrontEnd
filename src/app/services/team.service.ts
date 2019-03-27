@@ -16,7 +16,7 @@ export class TeamService {
     return this.http.get<Team[]>(`${apiUrl}/teams`)
       .pipe(
         tap(_ => console.log('fetched teams')),
-        catchError(this.handleError('getProducts', []))
+        catchError(this.handleError('getTeams', []))
       );
   }
 
@@ -32,16 +32,22 @@ export class TeamService {
   addTeam(team: Team): Observable<Team> {
     return this.http.post<Team>(`${apiUrl}/teams`, team)
       .pipe(
-        tap((t: Team) => console.log(`added team w/ id=${t.id}`)),
+        tap((t: Team) => {
+          console.log(`added team id=${t.id}`);
+          this.notifier.notify('success', 'Added team successfully');
+        }),
         catchError(this.handleError<Team>('addTeam'))
       );
   }
 
-  updateTeam(team: Team): Observable<any> {
+  updateTeam(team: Team): Observable<Team | object> {
     const url = `${apiUrl}/teams/${team.id}`;
     return this.http.put(url, team)
       .pipe(
-        tap(_ => console.log(`updated team id=${team.id}`)),
+        tap(_ => {
+          console.log(`updated team id=${team.id}`);
+          this.notifier.notify('success', 'Updated team successfully');
+        }),
         catchError(this.handleError<any>('updateTeam'))
       );
   }
@@ -50,7 +56,10 @@ export class TeamService {
     const url = `${apiUrl}/teams/${id}`;
     return this.http.delete<Team>(url)
       .pipe(
-        tap(_ => console.log(`deleted product id=${id}`)),
+        tap(_ => {
+          console.log(`deleted product id=${id}`)
+          this.notifier.notify('success', 'Deleted team successfully');
+        }),
         catchError(this.handleError<Team>('deleteTeam'))
       );
   }

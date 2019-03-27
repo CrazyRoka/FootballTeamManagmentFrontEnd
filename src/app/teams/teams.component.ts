@@ -16,8 +16,7 @@ export class TeamsComponent implements OnInit {
   constructor(
     private router: Router,
     private teamService: TeamService,
-    private spinner: NgxSpinnerService,
-    private notifier: NotifierService) { }
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -36,20 +35,21 @@ export class TeamsComponent implements OnInit {
     if(index < 0 || index >= this.teams.length) {
       return;
     }
-    this.router.navigate(['teams/details', this.teams[index].id]);
+    this.router.navigate(['/teams/details', this.teams[index].id]);
   }
 
   onDelete(index: number) {
+    if(index < 0 || index >= this.teams.length) {
+      return;
+    }
     this.spinner.show();
     this.teamService.deleteTeam(this.teams[index].id)
       .subscribe(
         data => {
           this.spinner.hide();
-          this.notifier.notify('success', 'Team deleted');
           this.teams.splice(index, 1);
         }, error => {
           this.spinner.hide();
-          this.notifier.notify('error', error.status);
         }
       )
   }
