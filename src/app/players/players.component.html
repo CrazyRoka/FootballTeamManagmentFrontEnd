@@ -1,0 +1,31 @@
+<div class="players-page">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Team Id</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of players; let i = index">
+        <td>{{ player.id }}</td>
+        <td>{{ player.firstName }}</td>
+        <td>{{ player.lastName }}</td>
+        <td>{{ player.teamId }}</td>
+        <td style="width: 1px">
+          <button type="button" class="btn btn-info" (click)="onEdit(i)">Edit</button>
+        </td>
+        <td style="width: 1px">
+          <button type="button" class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="float-right">
+    <button type="submit" class="btn btn-primary" (click)="onNew()">New Football Player</button>
+  </div>
+</div>

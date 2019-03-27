@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Team } from '../team';
 import { apiUrl } from '../globals';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,7 @@ export class TeamService {
     return this.http.get<Team[]>(`${apiUrl}/teams`)
       .pipe(
         tap(_ => console.log('fetched teams')),
-        catchError(this.handleError('getTeams', []))
+        catchError(this.handleError())
       );
   }
 
@@ -25,7 +25,7 @@ export class TeamService {
     return this.http.get<Team>(url)
       .pipe(
         tap(_ => console.log(`fetched team id=${id}`)),
-        catchError(this.handleError<Team>(`getTeam id=${id}`))
+        catchError(this.handleError())
       );
   }
 
@@ -36,7 +36,7 @@ export class TeamService {
           console.log(`added team id=${t.id}`);
           this.notifier.notify('success', 'Added team successfully');
         }),
-        catchError(this.handleError<Team>('addTeam'))
+        catchError(this.handleError())
       );
   }
 
@@ -48,7 +48,7 @@ export class TeamService {
           console.log(`updated team id=${team.id}`);
           this.notifier.notify('success', 'Updated team successfully');
         }),
-        catchError(this.handleError<any>('updateTeam'))
+        catchError(this.handleError())
       );
   }
 
@@ -60,14 +60,15 @@ export class TeamService {
           console.log(`deleted product id=${id}`)
           this.notifier.notify('success', 'Deleted team successfully');
         }),
-        catchError(this.handleError<Team>('deleteTeam'))
+        catchError(this.handleError())
       );
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.notifier.notify('error', error);
-      return of(result as T);
+  private handleError() {
+    return (error: any): Observable<any> => {
+      console.log(error);
+      this.notifier.notify('error', error.statusText);
+      return throwError(error);
     };
   }
 }

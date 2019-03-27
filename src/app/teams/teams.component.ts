@@ -23,10 +23,8 @@ export class TeamsComponent implements OnInit {
     this.teamService.getTeams()
       .subscribe((res: Team[]) => {
         this.teams = res;
-        console.log(this.teams);
         this.spinner.hide();
       }, err => {
-        console.log(err);
         this.spinner.hide();
       });
   }

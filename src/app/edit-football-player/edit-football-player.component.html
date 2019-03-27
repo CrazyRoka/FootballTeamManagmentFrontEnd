@@ -1,3 +1,21 @@
-<p>
-  edit-football-player works!
-</p>
+<div>
+  <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-10 offset-1">
+    <form [formGroup]="playerForm" (validSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" class="form-control" formControlName="FirstName">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" class="form-control" formControlName="LastName">
+      </div>
+      <div class="form-group">
+        <label>Teams</label>
+        <select class="form-control" formControlName="TeamId">
+          <option *ngFor="let team of teams" [value]="team.id">{{team.name}}</option>
+        </select>
+      </div>
+      <button class="btn btn-primary float-right" type="submit">Update</button>
+    </form>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { AddTeamComponent } from './add-team/add-team.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
 import { AddFootballPlayerComponent } from './add-football-player/add-football-player.component';
 import { EditFootballPlayerComponent } from './edit-football-player/edit-football-player.component';
+import { PlayersComponent } from './players/players.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'players/details/:id',
     component: EditFootballPlayerComponent
+  },
+  {
+    path: 'players',
+    component: PlayersComponent
   }
 ];
 
