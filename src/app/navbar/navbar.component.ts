@@ -1,17 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
   isCollapsed = true;
 
-  constructor() { }
+  constructor(private userSerivce: UserService, private notifier: NotifierService) { }
 
-  ngOnInit() {
+  public get IsLoggedIn() {
+    return this.userSerivce.currentTokenValue != null;
   }
 
+  public get IsLoggedOut() {
+    return this.userSerivce.currentTokenValue == null;
+  }
+
+  logout() {
+    this.userSerivce.logout();
+    this.notifier.notify('success', 'Logged out');
+  }
 }

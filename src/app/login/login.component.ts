@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
+import { NotifierService } from 'angular-notifier';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +14,15 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  loading = false;
-
   constructor(
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private notifier: NotifierService,
+    private spinner: NgxSpinnerService) {
+      if (this.userService.currentTokenValue) {
+        this.router.navigate(['/']);
+      }
+    }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -37,17 +43,20 @@ export class LoginComponent implements OnInit {
         return;
     }
 
-    this.loading = true;
-    // this.userService.register(this.loginForm.value)
-    //   .subscribe(
-    //     data => {
-    //       this.alertService.success('Registration successful', true);
-    //       this.router.navigate(['/login']);
-    //     },
-    //     error => {
-    //       this.alertService.error(error);
-    //       this.loading = false;
-    //     });
+    const { Email, Password } = this.loginForm.value;
+    this.spinner.show();
+
+    this.userService.login(Email, Password)
+      .subscribe(
+        data => {
+          this.notifier.notify('success', 'Signed in successfully');
+          this.spinner.hide();
+          this.router.navigate(['/']);
+        },
+        ({ error }) => {
+          this.notifier.notify('error', error.message);
+          this.spinner.hide();
+        });
   }
 
   onReset() {

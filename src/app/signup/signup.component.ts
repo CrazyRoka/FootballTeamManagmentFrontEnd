@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { NotifierService } from 'angular-notifier';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-signup',
@@ -13,12 +14,15 @@ export class SignupComponent implements OnInit {
 
   registerForm: FormGroup;
 
-  loading = false;
-
   constructor(
     private router: Router,
     private userService: UserService,
-    private notifierService: NotifierService) { }
+    private notifierService: NotifierService,
+    private spinner: NgxSpinnerService) {
+      if (this.userService.currentTokenValue) {
+        this.router.navigate(['/']);
+      }
+    }
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -47,16 +51,17 @@ export class SignupComponent implements OnInit {
         return;
     }
 
-    this.loading = true;
+    this.spinner.show();
     this.userService.register(this.registerForm.value)
       .subscribe(
         data => {
           this.notifierService.notify('success', 'Registration successful');
+          this.spinner.hide();
           this.router.navigate(['/login']);
         },
         ({ error }) => {
           this.notifierService.notify('error', error.message);
-          this.loading = false;
+          this.spinner.hide();
         });
   }
 
