@@ -17,6 +17,9 @@ import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { TeamsComponent } from './teams/teams.component';
+import { AddTeamComponent } from './add-team/add-team.component';
+import { TeamDetailsComponent } from './team-details/team-details.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     SignupComponent,
     LoginComponent,
     FooterComponent,
+    TeamsComponent,
+    AddTeamComponent,
+    TeamDetailsComponent,
   ],
   imports: [
     BrowserModule,
