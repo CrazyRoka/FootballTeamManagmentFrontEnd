@@ -10,6 +10,7 @@ import { TeamDetailsComponent } from './team-details/team-details.component';
 import { AddFootballPlayerComponent } from './add-football-player/add-football-player.component';
 import { EditFootballPlayerComponent } from './edit-football-player/edit-football-player.component';
 import { PlayersComponent } from './players/players.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
   {
     path: 'players',
     component: PlayersComponent
+  },
+  {
+    path: 'change_password',
+    component: ChangePasswordComponent
   }
 ];
 

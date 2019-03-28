@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../services/team.service';
-import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UserService } from '../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { FootballPlayer } from '../footballPlayer';
 import { FootballPlayerService } from '../services/football-player.service';
 
@@ -23,14 +20,9 @@ export class TeamDetailsComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService,
     private teamService: TeamService,
     private playerService: FootballPlayerService,
-    private spinner: NgxSpinnerService) {
-      if (!this.userService.currentTokenValue) {
-        this.router.navigate(['/']);
-      }
-    }
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => this.id = params.id);

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NotifierService } from 'angular-notifier';
-import { UserService } from '../services/user.service';
 import { TeamService } from '../services/team.service';
 
 @Component({
@@ -17,13 +15,8 @@ export class AddTeamComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService,
     private teamService: TeamService,
-    private spinner: NgxSpinnerService) {
-      if (!this.userService.currentTokenValue) {
-        this.router.navigate(['/']);
-      }
-    }
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.teamForm = new FormGroup({
